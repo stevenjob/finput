@@ -1,6 +1,7 @@
 build/
 node_modules/
 .idea/
+*.iml
 build/
 .git
 npm-debug.log
