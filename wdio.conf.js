@@ -1,5 +1,5 @@
 var fs = require("fs");
-var config = JSON.parse(fs.readFileSync("./config.json"));
+//var config = JSON.parse(fs.readFileSync("./config.json"));
 
 exports.config = {
 
@@ -35,7 +35,7 @@ exports.config = {
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
     capabilities: [{
-        browserName: 'chrome',
+        browserName: 'chrome'
         // 'browserstack.local': true
     }],
     //

@@ -6,11 +6,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-webdriver');
   grunt.loadNpmTasks('grunt-babel');
-  grunt.loadNpmTasks('grunt-browserstacktunnel-wrapper');
+
   grunt.loadNpmTasks("grunt-remove-logging");
 
   var fs = require("fs");
-  var browserstackKey = JSON.parse(fs.readFileSync("./config.json")).browserstackKey;
 
   grunt.initConfig({
     clean: {
@@ -99,31 +98,15 @@ module.exports = function(grunt) {
       test: {
         configFile: './wdio.conf.js'
       }
-    },
-    'browserstacktunnel-wrapper': {
-      options: {
-        key: browserstackKey,
-        hosts: [{
-          name: 'localhost',
-          port: 3000,
-          sslFlag: 0
-        }],
-        forcelocal: true,
-        onlyAutomate: true,
-        v: true
-      }
-    },
+    }
   });
 
   grunt.registerTask('createLibFolder', ['clean:libs', 'babel']);
   grunt.registerTask('compile', ['createLibFolder', 'clean:dist', 'browserify:dev', 'removelogging', 'uglify']);
   grunt.registerTask('serve', ['compile', 'browserSync', 'watch']);
 
-  grunt.registerTask('test:browserstack', browserstackKey ?
-          ['browserstacktunnel-wrapper', 'webdriver'] : []);
-
   // Shortcut for test task
-  grunt.registerTask('test', ['test:browserstack']);
+  grunt.registerTask('test', ['webdriver']);
 
   grunt.registerTask('default', 'serve');
 };
