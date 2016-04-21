@@ -424,7 +424,7 @@ var Finput = function () {
   }, {
     key: 'onFocusout',
     value: function onFocusout(e) {
-      
+      console.debug('Focus OUT event', e);
       this.setValue(this.element.value);
     }
     /**
@@ -435,7 +435,7 @@ var Finput = function () {
   }, {
     key: 'onFocusin',
     value: function onFocusin(e) {
-      
+      console.debug('Focus IN event', e);
       this.element.selectionStart = 0;
       this.element.selectionEnd = this.element.value.length;
     }
@@ -448,7 +448,7 @@ var Finput = function () {
   }, {
     key: 'onDrop',
     value: function onDrop(e) {
-      
+      console.debug('Drop event', e);
       switch (this._dragState) {
         case _constants.DRAG_STATES.INTERNAL:
           // This case is handled by the 'onInput' function
@@ -473,7 +473,7 @@ var Finput = function () {
     key: 'onDragstart',
     value: function onDragstart(e) {
       this._dragState = e.target === this.element ? _constants.DRAG_STATES.INTERNAL : _constants.DRAG_STATES.EXTERNAL;
-      
+      console.debug('Drag STARTED', this._dragState, e);
     }
     /**
      * On end of ANY drag on page
@@ -483,7 +483,7 @@ var Finput = function () {
   }, {
     key: 'onDragend',
     value: function onDragend(e) {
-      
+      console.debug('Drag ENDED', this._dragState, e);
       this._dragState = _constants.DRAG_STATES.NONE;
     }
     /**
@@ -518,7 +518,7 @@ var Finput = function () {
 
       var actionType = this.getActionType(keyInfo.keyName, e);
 
-      
+      console.debug(actionType);
 
       switch (actionType) {
         case _constants.ACTION_TYPES.NUMBER:
@@ -537,7 +537,7 @@ var Finput = function () {
         case _constants.ACTION_TYPES.VERTICAL_ARROW:
         case _constants.ACTION_TYPES.HOME:
         case _constants.ACTION_TYPES.END:
-          
+          console.debug(actionType);
           // Default behaviour
           return;
         case _constants.ACTION_TYPES.BACKSPACE:
@@ -580,7 +580,7 @@ var Finput = function () {
   }, {
     key: 'onInput',
     value: function onInput(e) {
-      
+      console.debug('on INPUT', e);
       this.setValue(this.element.value);
     }
 

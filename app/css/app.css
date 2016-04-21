@@ -1,0 +1,17 @@
+.frame {
+    margin-top: 100px;
+    padding: 10px;
+    display: flex;
+}
+
+.frame * {
+    margin: 10px;
+}
+
+.input {
+    padding: 10px;
+}
+
+h3 {
+    display: inline-block;
+}

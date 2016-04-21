@@ -6,10 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-webdriver');
   grunt.loadNpmTasks('grunt-babel');
-
   grunt.loadNpmTasks("grunt-remove-logging");
-
-  var fs = require("fs");
 
   grunt.initConfig({
     clean: {
@@ -20,7 +17,8 @@ module.exports = function(grunt) {
       dev: {
         files: {
           'build/bundle.js': ['main.js'],
-          'dist/finput.js': ['src/finput.js']
+          'dist/finput.js': ['src/finput.js'],
+          'app/libs/finput.js': ['src/finput.js']
         },
         options: {
           browserifyOptions: {

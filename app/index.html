@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="numericFinputApp">
+<head>
+    <meta charset="utf-8">
+    <title>My AngularJS CSV App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+    <h1 class="display-3 text-xs-center text-primary m-y-3">Input comparison</h1>
+    <div ng-view>
+    </div>
+
+    <script src="libs/finput.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="app.js"></script>
+    <script src="app-config.js"></script>
+    <script src="utils/input/numeric-input-directive.js"></script>
+    <script src="utils/input/finput-directive.js"></script>
+    <script src="input/input.js"></script>
+</body>
+</html>

@@ -1,10 +1,13 @@
-build/
+logs/*
+!.gitkeep
 node_modules/
-.idea/
-*.iml
+bower_components/
+tmp
+.DS_Store
+.idea
 build/
+*.iml
 .git
 npm-debug.log
 selenium-debug.log
 tests/nightwatch/report
-config.json
