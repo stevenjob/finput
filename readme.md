@@ -34,7 +34,7 @@ Default: `2`
 Maximum number of decimal digits the value can take
 
 ##### range
-Type: `Number`  
+Type: `string`
 Default: `ALL`
 
 The possible range of values that the value can take
