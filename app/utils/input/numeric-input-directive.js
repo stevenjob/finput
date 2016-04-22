@@ -33,24 +33,29 @@
         var regex = new RegExp(NUMBER_REGEXP);
 
         var formatting = true;
-        var maxInputLength = 16;            // Maximum input length. Default max ECMA script.
-        var max;                            // Maximum value. Default undefined.
-        var min;                            // Minimum value. Default undefined.
-        var decimals = 2;                   // Number of decimals. Default 2.
-        var lastValidValue;                 // Last valid value.
+
+        //Number.MAX_SAFE_INTEGER.toString().length - 1 (because of rounding)
+        var maxInputLength = 15;                   // Maximum input length. Default max ECMA script.
+        var maxDisplayValue;                       // Max display value that the user will see. ng-model will never be greater than this. Default undefined.
+        var max;                                   // Maximum value set by user. Default undefined.
+        var min;                                   // Minimum value set by user. Default undefined.
+        var decimals = 2;                          // Number of decimals. Default 2.
+        var lastValidValue;                        // Last valid value.
 
         // Create parsers and formatters.
         ngModelCtrl.$parsers.push(parseViewValue);
         ngModelCtrl.$parsers.push(minValidator);
         ngModelCtrl.$parsers.push(maxValidator);
         ngModelCtrl.$formatters.push(formatViewValue);
+        ngModelCtrl.$validators.maxValidator = userDefinedMaxValidator;
 
         el.bind('blur', onBlur);        // Event handler for the leave event.
         el.bind('focus', onFocus);      // Event handler for the focus event.
 
         // Put a watch on the min, max and decimal value changes in the attribute.
+        //todo remove this and change to none dynamic watchers
         scope.$watch(attrs.min, onMinChanged);
-        scope.$watch(attrs.max, onMaxChanged);
+        scope.$watch(attrs.maxDisplayValue, onMaxChanged);
         scope.$watch(attrs.decimals, onDecimalsChanged);
         scope.$watch(attrs.formatting, onFormattingChanged);
 
@@ -75,8 +80,8 @@
 
         function onMaxChanged(value) {
             if (!angular.isUndefined(value)) {
-                max = parseFloat(value);
-                maxInputLength = calculateMaxLength(max);
+                maxDisplayValue = parseFloat(value);
+                maxInputLength = calculateMaxLength(maxDisplayValue);
                 lastValidValue = maxValidator(ngModelCtrl.$modelValue);
                 ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
                 ngModelCtrl.$render();
@@ -86,7 +91,7 @@
         function onDecimalsChanged(value) {
             if (!angular.isUndefined(value)) {
                 decimals = parseFloat(value);
-                maxInputLength = calculateMaxLength(max);
+                maxInputLength = calculateMaxLength(maxDisplayValue);
                 if (lastValidValue !== undefined) {
                     ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
                     ngModelCtrl.$render();
@@ -143,6 +148,7 @@
 
         /**
          * Parse the view value.
+         * maintains cursor position.
          */
         function parseViewValue(value) {
             if (angular.isUndefined(value)) {
@@ -174,8 +180,8 @@
             }
             else {
                 if (regex.test(value) && (value.length <= maxInputLength)) {
-                    if (value > max) {
-                        lastValidValue = max;
+                    if (value > maxDisplayValue) {
+                        lastValidValue = maxDisplayValue;
                     }
                     else if (value < min) {
                         lastValidValue = min;
@@ -185,9 +191,11 @@
                     }
                 }
                 else {
+                    var cursorPositionAfter = el[0].selectionStart - (value.length - (lastValidValue ? lastValidValue.toString().length : 0));
                     // Render the last valid input in the field
                     ngModelCtrl.$setViewValue(formatViewValue(lastValidValue));
                     ngModelCtrl.$render();
+                    el[0].setSelectionRange(cursorPositionAfter, cursorPositionAfter);
                 }
             }
 
@@ -199,7 +207,7 @@
          * If no maximum the input will be limited to 16; the maximum ECMA script int.
          */
         function calculateMaxLength(value) {
-            var length = 16;
+            var length = 15;
             if (!angular.isUndefined(value)) {
                 length = Math.floor(value).toString().length;
             }
@@ -234,9 +242,9 @@
          * Maximum value validator.
          */
         function maxValidator(value) {
-            if (!angular.isUndefined(max)) {
-                if (!ngModelCtrl.$isEmpty(value) && (value > max)) {
-                    return max;
+            if (!angular.isUndefined(maxDisplayValue)) {
+                if (!ngModelCtrl.$isEmpty(value) && (value > maxDisplayValue)) {
+                    return maxDisplayValue;
                 } else {
                     return value;
                 }
@@ -246,6 +254,12 @@
             }
         }
 
+        /**
+         * Maximum value validator.
+         */
+        function userDefinedMaxValidator(modelValue, viewValue) {
+            return modelValue === undefined || modelValue < max;
+        }
 
         /**
          * Function for handeling the blur (leave) event on the control.
