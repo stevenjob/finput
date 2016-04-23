@@ -64,13 +64,6 @@
         el.bind('blur', onBlur);        // Event handler for the leave event.
         el.bind('focus', onFocus);      // Event handler for the focus event.
 
-        // Put a watch on the min, max and decimal value changes in the attribute.
-        //todo remove this and change to none dynamic watchers
-        //scope.$watch(attrs.min, onMinChanged);
-        //scope.$watch(attrs.maxDisplayValue, onMaxChanged);
-        //scope.$watch(attrs.decimals, onDecimalsChanged);
-        //scope.$watch(attrs.formatting, onFormattingChanged);
-
         // Setup decimal formatting.
         if (decimals > -1) {
             ngModelCtrl.$parsers.push(function (value) {
@@ -84,44 +77,6 @@
         ngModelCtrl.$validators.maxValidator = function(modelValue, viewValue) {
             return angular.isUndefined(modelValue) || modelValue <= max;
         };
-
-        function onMinChanged(value) {
-            if (!angular.isUndefined(value)) {
-                min = parseFloat(value);
-                lastValidValue = minValidator(ngModelCtrl.$modelValue);
-                ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
-                ngModelCtrl.$render();
-            }
-        }
-
-        function onMaxChanged(value) {
-            if (!angular.isUndefined(value)) {
-                maxDisplayValue = parseFloat(value);
-                maxInputLength = calculateMaxLength(maxDisplayValue);
-                lastValidValue = maxValidator(ngModelCtrl.$modelValue);
-                ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
-                ngModelCtrl.$render();
-            }
-        }
-
-        function onDecimalsChanged(value) {
-            if (!angular.isUndefined(value)) {
-                decimals = parseFloat(value);
-                maxInputLength = calculateMaxLength(maxDisplayValue);
-                if (lastValidValue !== undefined) {
-                    ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
-                    ngModelCtrl.$render();
-                }
-            }
-        }
-
-        function onFormattingChanged(value) {
-            if (!angular.isUndefined(value)) {
-                formatting = (value !== false);
-                ngModelCtrl.$setViewValue(formatPrecision(lastValidValue));
-                ngModelCtrl.$render();
-            }
-        }
 
         /**
          * Round the value to the closest decimal.
@@ -283,7 +238,6 @@
                 ngModelCtrl.$render();
             }
         }
-
 
         /**
          * Function for handeling the focus (enter) event on the control.
