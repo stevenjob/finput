@@ -48,7 +48,7 @@
         var maxDisplayValue = DEFAULTS.maxDisplayValue;                                        // Max display value that the user will see. ng-model will never be greater than this. Default undefined.
         var max = !angular.isUndefined(scope.max) ? parseFloat(scope.max) : DEFAULTS.max;      // Maximum value set by user. Default undefined.
         var min = !angular.isUndefined(scope.min) ? parseFloat(scope.min) : DEFAULTS.min;      // Minimum value set by user. Default undefined.
-        var decimals = !angular.isUndefined(scope.decimals) ? parseInt(scope.decimals) : 2;    // Number of decimals. Default 2.
+        var decimals = !angular.isUndefined(scope.decimals) ? parseInt(scope.decimals) : DEFAULTS.decimals;    // Number of decimals. Default 2.
         var lastValidValue;                                                                    // Last valid value.
 
         //Number.MAX_SAFE_INTEGER.toString().length - 1 (because of rounding)
@@ -181,8 +181,8 @@
             // Allow "-" inputs only when min < 0
             if (value.indexOf('-') === 0) {
                 if (min >= 0) {
-                    value = null;
                     cursorPositionAfter = el[0].selectionStart - (value.length - (lastValidValue ? lastValidValue.toString().length : 0));
+                    value = '';
                     ngModelCtrl.$setViewValue(formatViewValue(lastValidValue));
                     ngModelCtrl.$render();
                     el[0].setSelectionRange(cursorPositionAfter, cursorPositionAfter);
@@ -195,7 +195,6 @@
             var empty = ngModelCtrl.$isEmpty(value);
             if (empty) {
                 lastValidValue = '';
-                //ngModelCtrl.$modelValue = undefined;
             }
             else {
                 if (regex.test(value) && (value.length <= maxInputLength)) {
