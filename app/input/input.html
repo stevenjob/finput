@@ -1,13 +1,25 @@
 <div class="container">
-    <h3>Finput</h3>
-    <span> ng-model is: {{value2}}</span>
-    <input class="form-control form-control-lg" ng-model="value2" scale="4" finput />
     <h3>Numeric Input</h3>
     <span> ng-model is: {{value}}</span>
-
     <form name="myform">
-    <input name="input" class="form-control form-control-lg" ng-model="value" numeric-input min="0" decimals="4" ng-trim="false" formatting="false"/>
+    <input name="input" class="form-control form-control-lg" ng-model="value" numeric-input min="0" max="3000000" decimals="4" ng-trim="false" formatting="true"/>
         <div ng-if="myform.input.$error.maxValidator">
+            Problem
+        </div>
+    </form>
+    <h3>Numeric Input 2 no formatting</h3>
+    <span> ng-model is: {{value2}}</span>
+    <form name="myform2">
+        <input name="input" class="form-control form-control-lg" ng-model="value2" numeric-input min="0" max="3000000" decimals="4" ng-trim="false" formatting="false"/>
+        <div ng-if="myform2.input.$error.maxValidator">
+            Problem
+        </div>
+    </form>
+    <h3>Numeric Input 2 no formatting min is -200</h3>
+    <span> ng-model is: {{value3}}</span>
+    <form name="myform3">
+        <input name="input" class="form-control form-control-lg" ng-model="value3" numeric-input min="-200" max="3000000" decimals="4" ng-trim="false" formatting="false"/>
+        <div ng-if="myform3.input.$error.maxValidator">
             Problem
         </div>
     </form>
