@@ -1,0 +1,12 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <input
+    finput
+    class="finput"      
+    placeholder="finput"
+    formControlName="finput"
+  >
+  <button>Submit</button>
+</form>
+<button (click)="patchFinput()">Patch Finput</button>
+
+{{ formValues | json }}

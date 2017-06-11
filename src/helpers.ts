@@ -1,18 +1,18 @@
 
-import {ACTION_TYPES, DRAG_STATES} from './constants';
+import { ACTION_TYPES, DRAG_STATES } from './constants';
 
 /**
  * Edit a string with a new string to add.
  * Handles the case if text is highlighted also, in which case that text
  * will be replaced with the 'toAdd' string
  */
-exports.editString = function(str, toAdd, caretStart, caretEnd = caretStart) {
+export const editString = function(str, toAdd, caretStart, caretEnd = caretStart) {
   const firstHalf = str.slice(0, caretStart);
   const secondHalf = str.slice(caretEnd, str.length);
   return `${firstHalf}${toAdd}${secondHalf}`;
 }
 
-exports.formatThousands = function(val, options) {
+export const formatThousands = function(val, options) {
   const startIndex = val.indexOf(options.decimal) > -1
     ? val.indexOf(options.decimal) - 1
     : val.length - 1;
@@ -21,7 +21,7 @@ exports.formatThousands = function(val, options) {
   // i must be greater than zero because number cannot start with comma
   let i = startIndex;
   let j = 1;
-  for (i, j; i > endIndex; i--, j++) {
+  for (i; i > endIndex; i--, j++) {
     // Every 3 characers, add a comma
     if (j % 3 === 0) {
       val = this.editString(val, options.thousands, i);
@@ -34,7 +34,7 @@ exports.formatThousands = function(val, options) {
 /**
  * Partially format the value, only adding commas as needed (Done on keypress/keyup)
  */
-exports.partialFormat = function(val, options) {
+export const partialFormat = function(val, options) {
   val = val.replace(new RegExp(`[${options.thousands}]`, 'g'), '');
   val = this.removeleadingZeros(val, options);
   val = this.removeExtraDecimals(val, options);
@@ -46,7 +46,7 @@ exports.partialFormat = function(val, options) {
 /**
  * Fully format the value
  */
-exports.fullFormat = function(val, options) {
+export const fullFormat = function(val, options) {
   val = this.partialFormat(val, options);
 
   if (val == null || val == '') {
@@ -87,7 +87,7 @@ exports.fullFormat = function(val, options) {
  * Remove any surplus zeros from the beginning of the integer part of the number
  * @param {str} The string value (with no thousand separators)
  */
-exports.removeleadingZeros = function(val, options) {
+export const removeleadingZeros = function(val, options) {
   // Remove unnecessary zeros
   const decimalIndex = val.indexOf(options.decimal) > -1
     ? val.indexOf(options.decimal)
@@ -110,14 +110,14 @@ exports.removeleadingZeros = function(val, options) {
   return `${sign}${integerPart}${decimalPart}`;
 }
 
-exports.removeExtraDecimals = function(val, options) {
+export const removeExtraDecimals = function(val, options) {
   const decimalIndex = val.indexOf(options.decimal) > -1
     ? val.indexOf(options.decimal)
     : val.length;
 
   const integerPart = val.slice(0, decimalIndex + 1);
   let decimalPart = val.slice(decimalIndex + 1)
-    .slice(0, options.scale == null ? decimalPart.length : options.scale);
+    .slice(0, options.scale == null ? 0 : options.scale);
 
   return `${integerPart}${decimalPart}`;
 }
@@ -127,7 +127,7 @@ exports.removeExtraDecimals = function(val, options) {
  * caret position after formatting. Caret is then adjusted by the returned offset
  * Currency symbol or thousand separators may have been added
  */
-exports.calculateOffset = function(prev, curr, pos, options) {
+export const calculateOffset = function(prev, curr, pos, options) {
   let i, prevSymbols = 0, currentSymbols = 0;
   for (i=0; i < pos; i++) {
     if (prev[i] === options.thousands) {
@@ -150,7 +150,7 @@ exports.calculateOffset = function(prev, curr, pos, options) {
  * @param {caretPos} Current caret position in input
  * @param {options} Finput options object
  */
-exports.allowedZero = function(val, char, caretPos, options) {
+export const allowedZero = function(val, char, caretPos, options) {
   if (char != 0) {
     return true;
   }
@@ -179,11 +179,11 @@ exports.allowedZero = function(val, char, caretPos, options) {
  * @param {val} string value to convert to a number
  * @param {options} Finput options object
  */
-exports.toNumber = function(val, options) {
+export const toNumber = function(val, options) {
   return val && Number(val.replace(new RegExp(`[${options.thousands}]`, 'g'), ''));
 }
 
-exports.parseString = function(str, options) {
+export const parseString = function(str, options) {
   let multiplier = 1;
   let parsed = '';
 

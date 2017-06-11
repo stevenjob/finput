@@ -1,5 +1,5 @@
 
-exports.ACTION_TYPES = {
+export const ACTION_TYPES = {
   NUMBER: 'NUMBER',
   SHORTCUT: 'SHORTCUT',
   DECIMAL: 'DECIMAL',
@@ -16,13 +16,13 @@ exports.ACTION_TYPES = {
   END: 'END'
 }
 
-exports.DRAG_STATES = {
+export const DRAG_STATES = {
   NONE: 'NONE',
   INTERNAL: 'INTERNAL',
   EXTERNAL: 'EXTERNAL'
 }
 
-exports.RANGE = {
+export const RANGE = {
   ALL: 'ALL',
   POSITIVE: 'POSITIVE'
 }

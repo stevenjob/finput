@@ -4,16 +4,14 @@
 // All functions dealing with keypresses (listened to on the keydown event)
 // are here, with specific implementations for most types of key
 
-import {ACTION_TYPES, RANGE} from './constants';
-import helpers from './helpers';
-
-module.exports = {
+import { ACTION_TYPES, RANGE } from './constants';
+import * as helpers from './helpers';
 
   /**
    * NUMBER HANDLER
    * @param {keyInfo} Information about the keypress/action
    */
-  onNumber: function(keyInfo, options) {
+  export const onNumber = function(keyInfo, options) {
     // Remove characters in current selection
     const temp = helpers.editString(keyInfo.currentValue, '', keyInfo.caretStart, keyInfo.caretEnd);
 
@@ -28,13 +26,13 @@ module.exports = {
       keyInfo.caretStart += 1;
     }
     keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * MINUS HANDLER
    * @param {keyInfo} Information about the keypress/action
    */
-  onMinus: function(keyInfo, options) {
+  export const onMinus = function(keyInfo, options) {
     const minusAllowed = keyInfo.caretStart === 0
       && (keyInfo.currentValue[0] !== '-' || keyInfo.caretEnd > 0)
       && options.range !== RANGE.POSITIVE;
@@ -49,14 +47,14 @@ module.exports = {
        keyInfo.caretStart += 1;
      }
      keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * DECIMAL HANDLER
    * @param {keyInfo} Information about the keypress/action
    * @param {options} Configuration options for the input
    */
-  onDecimal: function(keyInfo, options) {
+  export const onDecimal = function(keyInfo, options) {
     const decimalIndex = keyInfo.currentValue.indexOf(options.decimal);
 
     // If there is not already a decimal or the original would be replaced
@@ -79,14 +77,14 @@ module.exports = {
     }
 
     keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * SHORTCUT HANDLER
    * @param {keyInfo} Information about the keypress/action
    * @param {options} Configuration options for the input
    */
-  onShortcut: function(keyInfo, options) {
+  export const onShortcut = function(keyInfo, options) {
     const multiplier = options.shortcuts[keyInfo.keyName.toLowerCase()] || 1;
     const adjustedVal = helpers.editString(keyInfo.currentValue, '', keyInfo.caretStart, keyInfo.caretEnd);
     const rawValue = (helpers.toNumber(adjustedVal, options) || 1) * multiplier;
@@ -99,14 +97,14 @@ module.exports = {
       keyInfo.caretStart = keyInfo.newValue.length + Math.log10(1000);
     }
     keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * BACKSPACE HANDLER
    * @param {keyInfo} Information about the keypress/action
    * @param {thousands} Character used for the thousands delimiter
    */
-  onBackspace: function(keyInfo, thousands) {
+  export const onBackspace = function(keyInfo, thousands) {
     let firstHalf, lastHalf;
 
     if (keyInfo.caretStart === keyInfo.caretEnd) {
@@ -132,14 +130,14 @@ module.exports = {
 
     keyInfo.newValue = firstHalf + lastHalf;
     keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * DELETE HANDLER
    * @param {keyInfo} Information about the keypress/action
    * @param {thousands} Character used for the thousands delimiter
    */
-  onDelete: function(keyInfo, thousands) {
+  export const onDelete = function(keyInfo, thousands) {
     let firstHalf, lastHalf;
 
     if (keyInfo.caretStart === keyInfo.caretEnd) {
@@ -169,26 +167,25 @@ module.exports = {
 
     keyInfo.newValue = firstHalf + lastHalf;
     keyInfo.event.preventDefault();
-  },
+  }
 
   /**
    * UNDO HANDLER
    * @param {finput} the Finput object
    * @param {event} The keydown event which triggered the undo
    */
-  onUndo: function(finput, event) {
+  export const onUndo = function(finput, event) {
     finput.element.value = finput._history.undo();
     finput.element.setSelectionRange(finput.element.value.length, finput.element.value.length);
     event.preventDefault();
-  },
+  }
   /**
    * REDO HANDLER
    * @param {finput} the Finput object
    * @param {event} The keydown event which triggered the redo
    */
-  onRedo: function(finput, event) {
+  export const onRedo = function(finput, event) {
     finput.element.value = finput._history.redo();
     finput.element.setSelectionRange(finput.element.value.length, finput.element.value.length);
     event.preventDefault();
   }
-}
