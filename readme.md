@@ -37,7 +37,7 @@ Default: `2`
 Maximum number of decimal digits the value can take
 
 ##### range
-Type: `Number`  
+Type: `string`  
 Default: `ALL`
 
 The possible range of values that the value can take
@@ -58,12 +58,12 @@ The character used to separate thousands in the formatted value.
 `E.g. 1,000`
 
 ##### decimal
-Type: `string`  
+Type: `string`
 Default: `.`  
 The character used for the decimal point
 
 ##### shortcuts
-Type: `Object { character: multiplier }`  
+Type: `Object { character: multiplier }`
 Default: `{
   'k': 1000,
   'm': 1000000,
@@ -74,7 +74,9 @@ E.g. with the default shortcuts, typing `k` will multiply the number value by 10
 
 ##### invalidKeyCallback
 Type: `Function(invalidKeyInfo)`
+
 Default: `{}`
+
 a Callback function that is fired everytime a invalid key is pressed.
 the callback is called with the `invalidKeyInfo` object.
 
@@ -86,7 +88,9 @@ the callback is called with the `invalidKeyInfo` object.
 
 ##### onFocusinCallback
 Type: `Function(e)`
-Default: `{}`
+
+Default: `undefined`
+
 a Callback function that is fired everytime the input is brought into focus.
 the callback is called with the `Event` object.
 
